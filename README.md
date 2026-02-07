@@ -1,21 +1,31 @@
 # PACE
-For education purpose code from leet code
+only for education process the code is copied from leetcode 
+
+Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+programing language:C++
+Each row must contain the digits 1-9 without repetition.
+Each column must contain the digits 1-9 without repetition.
+Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
 class Solution {
 public:
-    vector<int> plusOne(vector<int>& digits) {
-        int n = digits.size();
+    bool isValidSudoku(vector<vector<char>>& board) {
+        bool row[9][9] = {false};
+        bool col[9][9] = {false};
+        bool box[9][9] = {false};
         
-        // Traverse from last digit
-        for (int i = n - 1; i >= 0; i--) {
-            if (digits[i] < 9) {
-                digits[i]++;      // just add 1
-                return digits;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') continue;
+                
+                int num = board[i][j] - '1';          // 0 to 8
+                int b = (i / 3) * 3 + (j / 3);        // box index
+                
+                if (row[i][num] || col[j][num] || box[b][num])
+                    return false;
+                
+                row[i][num] = col[j][num] = box[b][num] = true;
             }
-            digits[i] = 0;        // if digit is 9, make it 0
         }
-        
-        // If all digits were 9 (e.g., 999 → 1000)
-        digits.insert(digits.begin(), 1);
-        return digits;
+        return true;
     }
 };
